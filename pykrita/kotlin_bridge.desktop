@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=Krita/PythonPlugin
+X-KDE-Library=kotlin_bridge
+X-Python-2-Compatible=false
+X-Krita-Manual-Startup=false
+Name=Kotlin App Bridge
+Comment=Launch Kotlin app and communicate via socket.
+X-Krita-Manual-Path=Manual.html
