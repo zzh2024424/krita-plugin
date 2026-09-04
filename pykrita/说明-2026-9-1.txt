@@ -1,1 +1,2 @@
 windows系统下的Krita插件的目录：C:\Users\Administrator\AppData\Roaming\krita下面，文件夹名称是：pykrita
+macOS系统下的krita插件的目录：~/Library/Application Support/krita/pykrita/
