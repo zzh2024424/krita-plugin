@@ -1,7 +1,7 @@
 # krita-plugin
 in macOS, 
 Copy the folder of the plugin to ~/Library/Application Support/krita/pykrita/
- ,include kotlin_bridge.desktop,kotlin_bridge folder(Just include __init__. py and kotlin-bridge. py),
+ ,include kotlin_bridge.desktop,kotlin_bridge folder(Just include Manual.html, __init__.py, and kotlin_bridge.py),
 restart krita ,in python plugin manager check new plugin,name is kotlin App Bridge,reatart krita agein.
 open Data to 3D Pro.
 Under the script in the Tools menu, click on "Launch Kotlin Bridge Program"。
