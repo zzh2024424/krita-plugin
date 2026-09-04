@@ -20,10 +20,20 @@ class KotlinBridgeExtension(Extension):
         self.server_socket = None
         self.running_port = 0
 
-        self.log_path = os.path.join(os.environ.get("TEMP", "/tmp"), "krita_bridge.log")
+        # [MODIFIED] 1. 日志路径改为用户主目录下的隐藏文件夹
+        self.log_path = os.path.join(
+            os.path.expanduser("~"),
+            ".krita-kotlin-bridge",
+            "krita_bridge.log"
+        )
+        # [MODIFIED] 2. 确保日志目录存在（不存在则自动创建）
+        try:
+            os.makedirs(os.path.dirname(self.log_path), exist_ok=True)
+        except Exception:
+            pass
 
         # 将端口写入临时文件，桌面端可读取该文件获取端口
-        self.port_file_path = os.path.join(tempfile.gettempdir(), "krita_port.txt")
+        self.port_file_path = "/tmp/krita_port.txt"
         self.handshake_bytes = b"KritaBridgeV1\n"
 
         self.helper = KritaSignalHelper()
@@ -34,6 +44,10 @@ class KotlinBridgeExtension(Extension):
         self._client_writer = None
         self._client_lock = threading.Lock()
 
+        # [MODIFIED] 3. 初始化时记录一条启动日志，确认路径生效
+        self.log(f"[Krita] Kotlin Bridge plugin initialized")
+        self.log(f"[Krita] Log path: {self.log_path}")
+
     def setup(self):
         pass
 
@@ -41,6 +55,8 @@ class KotlinBridgeExtension(Extension):
         line = f"{message}"
         print(line)
         try:
+            # 每次写入都确保目录存在（防止运行中被删除）
+            os.makedirs(os.path.dirname(self.log_path), exist_ok=True)
             with open(self.log_path, "a", encoding="utf-8") as f:
                 f.write(line + "\n")
         except Exception:
@@ -331,7 +347,7 @@ class KotlinBridgeExtension(Extension):
 
     def download_image_background(self, android_path):
         try:
-            pc_temp_dir = os.environ.get("TEMP", r"C:\temp")
+            pc_temp_dir = tempfile.gettempdir()
             pc_image_path = os.path.join(pc_temp_dir, "krita_received.png")
 
             if not os.path.exists(pc_temp_dir):
